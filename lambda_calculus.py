@@ -7,14 +7,14 @@ import functools  # 用于装饰器
 
 # 配置日志记录器
 logging.basicConfig(
-    level=logging.INFO,  # Change to logging.DEBUG for more verbose output during testing
+    level=logging.INFO,  # logging.DEBUG for more verbose output
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger("LambdaCalculus")
 
 
 # --- 装饰器 ---
-def type_check(*p_arg_types, **kw_arg_types):  # Renamed to distinguish from user-facing names
+def type_check(*p_arg_types, **kw_arg_types):  # distinguish from user-facing names
     """
     装饰器：检查函数/方法参数的类型。
     第一个位置参数 (self/cls) 会被跳过，如果 p_arg_types 对应的是用户参数。
@@ -25,7 +25,9 @@ def type_check(*p_arg_types, **kw_arg_types):  # Renamed to distinguish from use
         def wrapper(*args, **kwargs):
             # 检查位置参数 (args[0] is self/cls, so user args start from args[1])
             # p_arg_types corresponds to types for args[1], args[2], ...
-            for i, (arg_val, expected_type) in enumerate(zip(args[1:], p_arg_types)):
+            for i, (arg_val, expected_type) in enumerate(
+                zip(args[1:], p_arg_types)
+                ):
                 if not isinstance(arg_val, expected_type):
                     expected_repr = repr(expected_type)
                     actual_repr = repr(type(arg_val))
