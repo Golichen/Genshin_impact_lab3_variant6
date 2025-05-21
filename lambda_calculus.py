@@ -5,7 +5,6 @@ from typing import Set, List, Tuple, Optional
 import functools
 
 
-# 配置日志记录器
 logging.basicConfig(
     level=logging.INFO,  # logging.DEBUG for more verbose output
     format=(
@@ -15,18 +14,14 @@ logging.basicConfig(
 logger = logging.getLogger("LambdaCalculus")
 
 
-# --- 装饰器 ---
+# --- Decorator ---
 def type_check(*p_arg_types, **kw_arg_types):
     # distinguish from user-facing names
-    """
-    装饰器：检查函数/方法参数的类型。
-    第一个位置参数 (self/cls) 会被跳过，如果 p_arg_types 对应的是用户参数。
-    """
 
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            # 检查位置参数 (args[0] is self/cls, so user args start from args[1])
+            # (args[0] is self/cls, so user args start from args[1])
             # p_arg_types corresponds to types for args[1], args[2], ...
             for i, (arg_val, expected_type) in enumerate(
                 zip(args[1:], p_arg_types)
@@ -40,7 +35,7 @@ def type_check(*p_arg_types, **kw_arg_types):
                     )
                     raise TypeError(msg)
 
-            # 检查关键字参数
+            # Check the keyword parameters
             for name, expected_type in kw_arg_types.items():
                 if name in kwargs and \
                    not isinstance(kwargs[name], expected_type):
@@ -60,9 +55,6 @@ def type_check(*p_arg_types, **kw_arg_types):
 
 def non_empty_string_check(arg_name: str):
     # Simplified to only check by name for clarity
-    """
-    装饰器：检查指定的命名字符串参数是否非空。
-    """
 
     def decorator(func):
         @functools.wraps(func)
@@ -106,15 +98,13 @@ def non_empty_string_check(arg_name: str):
     return decorator
 
 
-# --- Lambda 项的定义 ---
+# --- Lambda ---
 class LambdaTerm:
-    """Lambda 项的基类"""
 
     def to_latex(self) -> str:
         raise NotImplementedError("Subclasses must implement to_latex")
 
-    def to_input_string(self) -> str:  # New method
-        """将 Lambda 项转换为可供解析器解析的字符串"""
+    def to_input_string(self) -> str:
         raise NotImplementedError("Subclasses must implement to_input_string")
 
     def __eq__(self, other):
@@ -147,7 +137,6 @@ class Variable(LambdaTerm):
                     is_complex_valid = True
 
             if not is_complex_valid:
-                # Line 118 related fix
                 logger.warning(
                     "Variable name '%s' has non-standard chars or format.",
                     _name
@@ -191,7 +180,6 @@ class Abstraction(LambdaTerm):
         current = self
         parts = []
         while isinstance(current, Abstraction):
-            # Line 168 related: ensure parts.append(...) is not too long
             var_input_str = current.var.to_input_string()
             parts.append(f"λ{var_input_str}.")
             current = current.body
@@ -373,7 +361,6 @@ class LambdaInterpreter:
         old_var = term.var
         new_body = self.substitute(term.body, old_var, new_var)
         converted_term = Abstraction(new_var, new_body)
-        # Line 305 fix:
         term_latex = term.to_latex()
         converted_latex = converted_term.to_latex()
         step_str = f"{term_latex} \\xrightarrow{{\\alpha}} {converted_latex}"
@@ -423,7 +410,6 @@ class LambdaInterpreter:
     @type_check(term=LambdaTerm, current_step=int)
     def reduce(self, term: LambdaTerm, current_step: int = 0) -> LambdaTerm:
         if current_step >= self.max_steps:
-            # Line 363 fix:
             term_ltx = term.to_latex()
             logger.warning(
                 "Reduction limit reached at step %s for term: %s",
@@ -443,7 +429,6 @@ class LambdaInterpreter:
             if isinstance(term, Application):
                 reduced_func = self.reduce(term.func, current_step + 1)
                 if reduced_func != term.func:
-                    # Line 382 related fix:
                     new_app = Application(reduced_func, term.arg)
                     return self.reduce(new_app, current_step + 1)
 
@@ -491,7 +476,6 @@ class LambdaInterpreter:
 
     @type_check(term=LambdaTerm)
     def interpret(self, term: LambdaTerm) -> LambdaTerm:
-        # Line 436 fix:
         logger.info(
             "Interpreting term: %s using %s strategy.",
             term.to_latex(), self.strategy
@@ -523,8 +507,7 @@ class LambdaInterpreter:
         return result
 
 
-# --- 输入解析器 (Parser remains largely the same as provided previously) ---
-# 令牌类型
+# --- Input parser (Parser remains largely the same as provided previously) ---
 LAMBDA = 'LAMBDA'  # λ or \
 VAR = 'VAR'      # x, y, myVar
 DOT = 'DOT'      # .
@@ -560,18 +543,15 @@ def tokenize(s: str) -> List[Tuple[str, str]]:
         elif char == ')':
             tokens.append((RPAREN, char))
             i += 1
-        # Line 492 fix: Broke long comment
         # Adjusted to ensure var names like 's_x' tokenized as one VAR
         elif char.isalpha() or char == '_':
             name = char
             i += 1
-            # Old: while i < len(s) and (s[i].isalnum() or s[i] == '_'):
             while i < len(s) and (s[i].isalnum() or s[i] == '_'):
                 name += s[i]
                 i += 1
             tokens.append((VAR, name))
         else:
-            # Line 500 fix: ensure SyntaxError msg construction is short
             msg = f"Unexpected character: {char} at position {i}"
             raise SyntaxError(msg)
     tokens.append((EOF, ""))
@@ -583,13 +563,11 @@ class Parser:
     def __init__(self, tokens: List[Tuple[str, str]]):
         self.tokens = tokens
         self.pos = 0
-        # Line 530 E501/E261 fix: Split conditional assignment
         if self.tokens:
             self.current_token = self.tokens[self.pos]
         else:
             self.current_token = (EOF, "")
 
-    # Line 534 E303 fix: Ensure one blank line between methods
     def _advance(self):
         self.pos += 1
         if self.pos < len(self.tokens):
@@ -666,7 +644,7 @@ class Parser:
         current_body = body
         for var in reversed(variables):
             current_body = Abstraction(var, current_body)
-        return current_body  # type: ignore
+        return current_body
 
     def _parse_expression(self) -> LambdaTerm:
         if self.current_token[0] == LAMBDA:
@@ -699,7 +677,6 @@ def parse_lambda_string(s: str) -> LambdaTerm:
 
 if __name__ == '__main__':
     print("Lambda Calculus Interpreter Examples")
-    # Line 601 related: Y_COMBINATOR_STR is fine as is.
     # Parenthesized multi-line string literal.
     Y_COMBINATOR_STR = (
         "λy_f.(λy_x.y_f (y_x y_x)) "
