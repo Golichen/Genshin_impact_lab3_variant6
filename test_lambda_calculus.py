@@ -1,6 +1,6 @@
 import unittest
 import logging
-from lambda_calculus_1 import ( # Line 8: Ensure import lines are short
+from lambda_calculus import (
     LambdaTerm, Variable, Abstraction, Application,
     LambdaInterpreter, ReductionStrategy,
     parse_lambda_string,
