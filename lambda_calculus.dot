@@ -1,0 +1,107 @@
+digraph LambdaCalculusSystem {
+    rankdir=TB; // Top-to-Bottom layout
+    fontsize=12;
+    node [shape=box, style="rounded,filled", fillcolor="#E6E6FA", fontname="Helvetica"]; // Light purple for nodes
+    edge [fontname="Helvetica", fontsize=10];
+
+    // Main Modules / Files
+    subgraph cluster_main_code {
+        label="lambda_calculus.py (Core Logic)";
+        style="filled";
+        color="lightgrey";
+        node [fillcolor="#ADD8E6"]; // Light blue for core logic
+
+        // --- Core LambdaTerm Classes ---
+        LambdaTerm [label="LambdaTerm\n(Base Class)", shape=ellipse];
+        Variable [label="Variable\n(name: str)"];
+        Abstraction [label="Abstraction\n(var: Variable, body: LambdaTerm)"];
+        Application [label="Application\n(func: LambdaTerm, arg: LambdaTerm)"];
+
+        // Inheritance
+        LambdaTerm -> Variable [style=dashed, arrowhead=empty, label="inherits"];
+        LambdaTerm -> Abstraction [style=dashed, arrowhead=empty, label="inherits"];
+        LambdaTerm -> Application [style=dashed, arrowhead=empty, label="inherits"];
+
+        // --- Interpreter ---
+        LambdaInterpreter [
+            label="LambdaInterpreter\n- strategy: ReductionStrategy\n- max_steps: int\n- steps: List[str]\n- used_var_names: Set[str]\n+ interpret()\n+ reduce()\n+ substitute()\n+ beta_reduce_once()\n+ eta_convert_once()\n+ alpha_convert()\n+ free_variables()\n+ fresh_var()",
+            shape=record
+        ];
+        ReductionStrategy [label="ReductionStrategy\n(Enum:\n NORMAL_ORDER,\n APPLICATIVE_ORDER)", shape=ellipse, fillcolor="#90EE90"]; // Light green for enum
+
+        // --- Parser ---
+        Parser [
+            label="Parser\n- tokens: List\n- pos: int\n- current_token: Tuple\n+ parse()\n+ _parse_expression()\n+ _parse_abstraction()\n+ _parse_application()\n+ _parse_atom()",
+            shape=record
+        ];
+        tokenize [label="tokenize(s: str)\n: List[Tuple[str,str]]", shape=cds, fillcolor="#FFFFE0"]; // Light yellow for functions
+        parse_lambda_string [label="parse_lambda_string(s: str)\n: LambdaTerm", shape=cds, fillcolor="#FFFFE0"];
+
+        // --- Decorators (conceptually part of core) ---
+        Decorators [label="Decorators\n(type_check,\nnon_empty_string_check)", shape=component, fillcolor="#FFDAB9"]; // Peach for components
+
+        // --- Logging ---
+        Logger_Core [label="Logger\n(logging.getLogger)", shape=cylinder, fillcolor="#D3D3D3"]; // Gray for logger
+
+        // Relationships within Core Logic
+        parse_lambda_string -> tokenize;
+        parse_lambda_string -> Parser;
+        Parser -> Variable [label="creates"];
+        Parser -> Abstraction [label="creates"];
+        Parser -> Application [label="creates"];
+        Parser -> LambdaTerm [label="returns types of"]; // Indirectly through its parse methods
+
+        LambdaInterpreter -> ReductionStrategy [label="uses"];
+        LambdaInterpreter -> LambdaTerm [label="processes"];
+        LambdaInterpreter -> Variable [label="manipulates/creates (fresh_var)"];
+        LambdaInterpreter -> Abstraction [label="manipulates"];
+        LambdaInterpreter -> Application [label="manipulates"];
+
+        Abstraction -> Variable [label="contains bound"];
+        Abstraction -> LambdaTerm [label="contains body"];
+        Application -> LambdaTerm [label="contains func/arg"];
+
+        // Decorator usage (conceptual)
+        Decorators -> LambdaTerm [label="validates init of"];
+        Decorators -> LambdaInterpreter [label="validates init of"];
+        Decorators -> parse_lambda_string [label="validates input to"];
+
+        // Logging usage (conceptual)
+        Logger_Core -> LambdaTerm [label="logs about"];
+        Logger_Core -> LambdaInterpreter [label="logs about"];
+        Logger_Core -> Parser [label="logs about"];
+        Logger_Core -> tokenize [label="logs about"];
+    }
+
+    subgraph cluster_test_code {
+        label="test_lambda_calculus.py (Unit Tests)";
+        style="filled";
+        color="lightgrey";
+        node [fillcolor="#98FB98"]; // Pale green for test code
+
+        TestLambdaCalculus [
+            label="TestLambdaCalculus\n(unittest.TestCase)\n+ test_variable()\n+ test_abstraction()\n+ test_application()\n+ test_parse_...()\n+ test_interpret_...()\n+ ...",
+            shape=record
+        ];
+        unittest [label="unittest\n(Python Module)", shape=folder, fillcolor="#D3D3D3"];
+        Logger_Test [label="Logger\n(lambda_logger)", shape=cylinder, fillcolor="#D3D3D3"];
+
+        // Relationships for Test Code
+        TestLambdaCalculus -> unittest [style=dashed, arrowhead=empty, label="inherits from TestCase"];
+        TestLambdaCalculus -> parse_lambda_string [label="tests/uses"];
+        TestLambdaCalculus -> LambdaInterpreter [label="tests/uses"];
+        TestLambdaCalculus -> Variable [label="tests/uses"];
+        TestLambdaCalculus -> Abstraction [label="tests/uses"];
+        TestLambdaCalculus -> Application [label="tests/uses"];
+        TestLambdaCalculus -> ReductionStrategy [label="uses"];
+        TestLambdaCalculus -> Logger_Test [label="configures/uses"];
+    }
+
+    // System Level Interactions
+    sys_module [label="sys\n(Python Module)", shape=folder, fillcolor="#D3D3D3"];
+    TestLambdaCalculus -> sys_module [label="uses setrecursionlimit"];
+
+    // Connecting loggers (they are the same underlying mechanism)
+    Logger_Core -> Logger_Test [style=invis]; // Conceptually linked
+                                           // but actual connection is via Python's logging config
+}
