@@ -391,8 +391,7 @@ class LambdaInterpreter:
                 "Beta reducing: %s -> %s", original_latex, reduced_latex
             )
             self.steps.append(
-                f"{original_latex}"
-                f"\\xrightarrow{{\\beta}} {reduced_latex}"
+                f"{original_latex} \\xrightarrow{{\\beta}} {reduced_latex}"
             )
             return reduced_term
         return None
