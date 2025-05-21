@@ -382,7 +382,8 @@ class LambdaInterpreter:
 
     def beta_reduce_once(self, term: LambdaTerm) -> Optional[LambdaTerm]:
         if (isinstance(term, Application)
-            and isinstance(term.func, Abstraction)):
+            and isinstance(term.func, Abstraction)
+        ):
             original_latex = term.to_latex()
             reduced_term = self.substitute(
                 term.func.body, term.func.var, term.arg
