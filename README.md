@@ -1,4 +1,4 @@
-# GROUP-NAME - lab NUMBER - variant NUMBER
+# Genshin_impact - lab 3 - variant 6
 
 This is an example project which demonstrates project structure and necessary
 CI checks. It is not the best structure for real-world projects, but good
