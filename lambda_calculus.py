@@ -1,8 +1,8 @@
 import logging
 import re
 from enum import Enum
-from typing import Set, Union, List, Tuple, Optional
-import functools  # 用于装饰器
+from typing import Set, List, Tuple, Optional
+import functools
 
 
 # 配置日志记录器
