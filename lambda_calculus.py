@@ -626,6 +626,8 @@ class Parser:
             raise SyntaxError(msg)
 
     def _parse_application(self) -> LambdaTerm:
+        term: LambdaTerm
+        
         if self.current_token[0] == LAMBDA:
             term = self._parse_abstraction()
         else:
