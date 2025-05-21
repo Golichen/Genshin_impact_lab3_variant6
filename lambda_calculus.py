@@ -27,7 +27,7 @@ def type_check(*p_arg_types, **kw_arg_types):  # distinguish from user-facing na
             # p_arg_types corresponds to types for args[1], args[2], ...
             for i, (arg_val, expected_type) in enumerate(
                 zip(args[1:], p_arg_types)
-                ):
+            ):
                 if not isinstance(arg_val, expected_type):
                     expected_repr = repr(expected_type)
                     actual_repr = repr(type(arg_val))
