@@ -306,7 +306,8 @@ class LambdaInterpreter:
                     logger.debug(
                         f"Alpha conversion needed during substitution"
                         f"for binder {term.var.name} in {term.to_latex()}"
-                        f"due to replacement {replacement.to_latex()}")"
+                        f"due to replacement {replacement.to_latex()}"
+                    )
                     new_binder = self.fresh_var(term.var.name)
                     logger.debug(
                         f"Generated fresh variable"
