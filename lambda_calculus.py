@@ -638,13 +638,18 @@ class Parser:
             raise SyntaxError("Expected at least one variable after lambda.")
 
         self._eat(DOT)
-        body = self._parse_expression()
+        body:lambdaTerm = self._parse_expression()
 
         # Build nested abstractions from right to left
-        current_body = body
+        term_being_built: LambdaTerm = body
         for var in reversed(variables):
-            current_body = Abstraction(var, current_body)
-        return current_body
+            term_being_built = Abstraction(var, term_being_built)
+        if not isinstance(term_being_built, Abstraction):
+            raise TypeError(
+                "Internal parsing error: _parse_abstraction "
+                "did not produce an Abstraction as expected."
+            )
+        return term_being_built
 
     def _parse_expression(self) -> LambdaTerm:
         if self.current_token[0] == LAMBDA:
