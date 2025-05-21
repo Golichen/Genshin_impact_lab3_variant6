@@ -350,13 +350,10 @@ class TestLambdaCalculus(unittest.TestCase):
         self.assertIsInstance(result, Application)
 
     def test_interpret_applicative_order_omega(self):
-        # Line 239: E501
         interpreter = LambdaInterpreter(
             strategy=ReductionStrategy.APPLICATIVE_ORDER, max_steps=5
         )
         term = parse_lambda_string("(λx.x x) (λx.x x)")
-        result = interpreter.interpret(term)
-        # Line 247: E501
         self.assertTrue(
             "(max steps reached)" in interpreter.steps[-1],
             f"Last step was: {interpreter.steps[-1]}"
@@ -462,7 +459,6 @@ class TestLambdaCalculus(unittest.TestCase):
     def test_visualization_steps_recorded(self):
         interpreter = LambdaInterpreter(max_steps=10)
         term = parse_lambda_string("(λx.x) y")
-        result = interpreter.interpret(term)
 
         self.assertTrue(len(interpreter.steps) >= 2)
         self.assertTrue("(Initial Term)" in interpreter.steps[0])
