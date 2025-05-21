@@ -28,4 +28,4 @@ enough for educational purposes.
 
 ## Design notes
 
-- ...
+- ![Lambda Calculus System Diagram](lambda_calculus.svg)
