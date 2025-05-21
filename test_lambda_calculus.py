@@ -9,12 +9,10 @@ from lambda_calculus import (
 import sys
 sys.setrecursionlimit(100000)
 
-# Line 14: E261 Correct spacing for comment
 lambda_logger.setLevel(logging.DEBUG)  # Uncomment for verbose debug output
 
-# Line 16: E302 Ensure 2 blank lines before class definition
-class TestLambdaCalculus(unittest.TestCase):
 
+class TestLambdaCalculus(unittest.TestCase):
 
     def setUp(self):
         pass
@@ -474,4 +472,3 @@ class TestLambdaCalculus(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
