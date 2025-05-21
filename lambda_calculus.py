@@ -1,5 +1,3 @@
---- START OF FILE lambda_calculus_2.py ---
-
 import logging
 import re
 from enum import Enum
