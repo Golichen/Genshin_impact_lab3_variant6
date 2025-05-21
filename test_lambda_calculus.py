@@ -15,11 +15,16 @@ lambda_logger.setLevel(logging.DEBUG)  # Uncomment for verbose debug output
 # Line 16: E302 Ensure 2 blank lines before class definition
 class TestLambdaCalculus(unittest.TestCase):
 
+
     def setUp(self):
         pass
 
-    def assertLambdaEqual(self, term1: LambdaTerm, term2: LambdaTerm, msg=None):
-        # Line 21: E501
+    def assertLambdaEqual(
+        self,
+        term1: LambdaTerm,
+        term2: LambdaTerm,
+        msg=None
+    ):
         self.assertEqual(term1, term2, msg)
 
     # --- 测试基本类 ---
@@ -112,7 +117,6 @@ class TestLambdaCalculus(unittest.TestCase):
 
     def test_parse_abstraction_with_application_body(self):
         term = parse_lambda_string("λx.y z")
-        # Line 80: E501
         expected = Abstraction(
             Variable("x"), Application(Variable("y"), Variable("z"))
         )
@@ -120,7 +124,6 @@ class TestLambdaCalculus(unittest.TestCase):
 
     def test_parse_application_with_abstraction_func(self):
         term = parse_lambda_string("(λx.x) y")
-        # Line 85: E501
         expected = Application(
             Abstraction(Variable("x"), Variable("x")), Variable("y")
         )
@@ -128,7 +131,6 @@ class TestLambdaCalculus(unittest.TestCase):
 
     def test_parse_application_with_abstraction_arg(self):
         term = parse_lambda_string("y (λx.x)")
-        # Line 90: E501
         expected = Application(
             Variable("y"), Abstraction(Variable("x"), Variable("x"))
         )
@@ -136,10 +138,12 @@ class TestLambdaCalculus(unittest.TestCase):
 
     def test_parse_nested_abstraction(self):
         term = parse_lambda_string("λx.λy.x y")
-        # Line 96: E501
         expected = Abstraction(
             Variable("x"),
-            Abstraction(Variable("y"), Application(Variable("x"), Variable("y")))
+            Abstraction(
+                Variable("y"),
+                Application(Variable("x"), Variable("y"))
+            )
         )
         self.assertLambdaEqual(expected, term)
 
@@ -157,7 +161,10 @@ class TestLambdaCalculus(unittest.TestCase):
         expected = Application(
             Abstraction(
                 Variable("x"),
-                Abstraction(Variable("y"), Application(Variable("x"), Variable("y")))
+                Abstraction(
+                    Variable("y"),
+                    Application(Variable("x"), Variable("y"))
+                )
             ),
             Variable("z")
         )
@@ -389,49 +396,49 @@ class TestLambdaCalculus(unittest.TestCase):
             f"Expected Abstraction, got {type(result_Y_CONST)}: "
             f"{result_Y_CONST.to_latex()}"
         )
-        self.assertIsInstance(result_Y_CONST, Abstraction, expected_type_msg)
+        self.assertIsInstance(
+            result_Y_CONST,
+            Abstraction,
+            expected_type_msg
+        )
         final_abs_const = result_Y_CONST
-        # Line 285: E303 (Original has 4 blank lines, reduced to 1)
         expected_body_type_msg = (
             f"Expected body to be Variable, "
-            f"got {type(final_abs_const.body)}" # type: ignore
+            f"got {type(final_abs_const.body)}"
         )
         self.assertIsInstance(
-            final_abs_const.body, Variable, # type: ignore
+            final_abs_const.body, Variable,
             expected_body_type_msg
         )
         # Line 293: E501
         self.assertEqual(
-            final_abs_const.var.name, final_abs_const.body.name, # type: ignore
+            final_abs_const.var.name, final_abs_const.body.name,
             "Expected var and body name to match in Id function"
         )
 
     # Line 381: E301 Ensure 1 blank line before new section
     # --- 测试装饰器 ---
     def test_input_validation_decorators_type_check(self):
-        # Line 384: E501
         err_msg_strat = (
             r"Keyword argument 'strategy' of __init__ expected "
             r"<enum 'ReductionStrategy'>, got <class 'str'>"
         )
         with self.assertRaisesRegex(TypeError, err_msg_strat):
-            LambdaInterpreter(strategy="not_a_strategy")  # type: ignore
+            LambdaInterpreter(strategy="not_a_strategy")
 
-        # Line 389: E501
         err_msg_steps = (
             r"Keyword argument 'max_steps' of __init__ expected "
             r"<class 'int'>, got <class 'str'>"
         )
         with self.assertRaisesRegex(TypeError, err_msg_steps):
-            LambdaInterpreter(max_steps="not_an_int")  # type: ignore
+            LambdaInterpreter(max_steps="not_an_int")
 
-        # Line 394: E501
         err_msg_s_type = (
             r"Keyword argument 's' of parse_lambda_string expected "
             r"<class 'str'>, got <class 'int'>"
         )
         with self.assertRaisesRegex(TypeError, err_msg_s_type):
-            parse_lambda_string(s=123)  # type: ignore
+            parse_lambda_string(s=123)
 
     def test_input_validation_decorators_non_empty_string(self):
         # Line 400: E501
@@ -457,7 +464,7 @@ class TestLambdaCalculus(unittest.TestCase):
     def test_visualization_steps_recorded(self):
         interpreter = LambdaInterpreter(max_steps=10)
         term = parse_lambda_string("(λx.x) y")
-        result = interpreter.interpret(term) # Line 412 (result not used, but fine)
+        result = interpreter.interpret(term)
 
         self.assertTrue(len(interpreter.steps) >= 2)
         self.assertTrue("(Initial Term)" in interpreter.steps[0])
