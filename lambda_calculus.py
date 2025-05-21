@@ -34,10 +34,11 @@ def type_check(*p_arg_types, **kw_arg_types):
                 if not isinstance(arg_val, expected_type):
                     expected_repr = repr(expected_type)
                     actual_repr = repr(type(arg_val))
-                    raise TypeError(
+                    msg = (
                         f"Positional argument {i + 1} of {func.__name__} "
                         f"expected {expected_repr}, got {actual_repr}"
                     )
+                    raise TypeError(msg)
 
             # 检查关键字参数
             for name, expected_type in kw_arg_types.items():
@@ -45,11 +46,11 @@ def type_check(*p_arg_types, **kw_arg_types):
                    not isinstance(kwargs[name], expected_type):
                     expected_repr = repr(expected_type)
                     actual_repr = repr(type(kwargs[name]))
-                    raise TypeError(
+                    msg = (
                         f"Keyword argument '{name}' of {func.__name__} "
                         f"expected {expected_repr}, got {actual_repr}"
                     )
-                # Also check if a required kwarg (by type hint) is missing
+                    raise TypeError(msg)
             return func(*args, **kwargs)
 
         return wrapper
@@ -85,17 +86,19 @@ def non_empty_string_check(arg_name: str):
 
             if value_to_check is not None:
                 if not isinstance(value_to_check, str):
-                    raise TypeError(
+                    msg = (
                         f"{param_description} of {func.__name__} must be "
                         f"a string."
                     )
+                    raise TypeError(msg)
                 if not value_to_check.strip():
                     value_repr = repr(value_to_check)
-                    raise ValueError(
+                    msg = (
                         f"{param_description} ({value_repr}) of "
                         f"{func.__name__} cannot be an empty or "
                         f"whitespace-only string."
                     )
+                    raise ValueError(msg)
             return func(*args, **kwargs)
 
         return wrapper
@@ -129,15 +132,13 @@ class Variable(LambdaTerm):
     @type_check(name=str)  # Check 'name' if passed as keyword
     @non_empty_string_check(arg_name="name")
     def __init__(self, name: str):
-        # The non_empty_string_check will run. If it passes, then we proceed.
-        _name = name.strip()  # Decorator handles empty/whitespace
+        _name = name.strip()
         if not _name:
             raise ValueError(
                 "Variable name cannot be empty or whitespace (internal check)."
             )
 
         if not re.match(r"^(?!^\d+$)[a-zA-Z_][a-zA-Z0-9_]*$", _name):
-            # Check if it's like x_0 (common for fresh vars)
             parts = _name.split('_')
             is_complex_valid = False
             if len(parts) > 1 and parts[-1].isdigit():
@@ -146,18 +147,17 @@ class Variable(LambdaTerm):
                     is_complex_valid = True
 
             if not is_complex_valid:
-                # Line 118 fix: Use logger %s formatting for long variable names
+                # Line 118 related fix
                 logger.warning(
-                    "Variable name '%s' has non-standard "
-                    "characters or format.", _name
+                    "Variable name '%s' has non-standard chars or format.",
+                    _name
                 )
         self.name = _name
 
     def to_latex(self) -> str:
         return self.name.replace("_", r"\_")
 
-    def to_input_string(self) -> str:  # New method
-        # Variable names are used directly in input syntax
+    def to_input_string(self) -> str:
         return self.name
 
     def __repr__(self):
@@ -167,7 +167,7 @@ class Variable(LambdaTerm):
 class Abstraction(LambdaTerm):
     @type_check(var=Variable, body=LambdaTerm)
     def __init__(self, var: Variable, body: LambdaTerm):
-        if not isinstance(var, Variable):  # Keep internal checks
+        if not isinstance(var, Variable):
             raise TypeError(
                 "Bound variable in Abstraction must be a Variable instance."
             )
@@ -184,7 +184,6 @@ class Abstraction(LambdaTerm):
         while isinstance(current_term, Abstraction):
             latex_parts.append(f"\\lambda {current_term.var.to_latex()}.")
             current_term = current_term.body
-        # 处理最后的部分（可能是一个Application或Variable）
         latex_parts.append(current_term.to_latex())
         return "".join(latex_parts)
 
@@ -192,11 +191,11 @@ class Abstraction(LambdaTerm):
         current = self
         parts = []
         while isinstance(current, Abstraction):
-            var_str = current.var.to_input_string()
-            parts.append(f"λ{var_str}.")
+            # Line 168 related: ensure parts.append(...) is not too long
+            var_input_str = current.var.to_input_string()
+            parts.append(f"λ{var_input_str}.")
             current = current.body
         parts.append(current.to_input_string())
-        # 修复多余的.号
         return "".join(parts).rstrip(".")
 
     def __repr__(self):
@@ -233,17 +232,18 @@ class Application(LambdaTerm):
         return f"{func_str} {arg_str}"
 
     def to_input_string(self) -> str:
-        # Reformatting long conditional expressions
+        func_input = self.func.to_input_string()
+        arg_input = self.arg.to_input_string()
+
         if isinstance(self.func, Abstraction):
-            func_str = f"({self.func.to_input_string()})"
+            func_str = f"({func_input})"
         else:
-            func_str = self.func.to_input_string()
+            func_str = func_input
 
         if isinstance(self.arg, (Abstraction, Application)):
-            arg_str = f"({self.arg.to_input_string()})"
+            arg_str = f"({arg_input})"
         else:
-            arg_str = self.arg.to_input_string()
-
+            arg_str = arg_input
         return f"{func_str} {arg_str}"
 
     def __repr__(self):
@@ -267,8 +267,8 @@ class LambdaInterpreter:
         self.steps: List[str] = []
         self.used_var_names: Set[str] = set()
         logger.info(
-            f"Interpreter initialized with strategy: {self.strategy}, "
-            f"max_steps: {self.max_steps}"
+            "Interpreter initialized with strategy: %s, max_steps: %s",
+            self.strategy, self.max_steps
         )
 
     def _collect_used_vars(self, term: LambdaTerm):
@@ -284,9 +284,8 @@ class LambdaInterpreter:
     def fresh_var(self, base_name: str = "v") -> Variable:
         i = 0
         new_name = base_name
-        # Ensure base_name itself is not purely numeric if it's the first try
         if base_name.isdigit():
-            base_name = f"v_{base_name}"  # Prepend a letter
+            base_name = f"v_{base_name}"
             new_name = base_name
 
         while new_name in self.used_var_names:
@@ -319,39 +318,35 @@ class LambdaInterpreter:
             else:
                 fv_replacement = self.free_variables(replacement)
                 if term.var in fv_replacement:
-                    # Original long logger call was already well-split.
-                    # The error was likely for an un-split prior version.
-                    # Current structure is fine for line length of source.
-                    logger.debug(
-                        f"Alpha conversion needed during substitution "
-                        f"for binder {term.var.name} in {term.to_latex()} "
-                        f"due to replacement {replacement.to_latex()}"
+                    term_latex = term.to_latex()
+                    replacement_latex = replacement.to_latex()
+                    log_msg_part1 = (
+                        f"Alpha conversion needed for binder {term.var.name}"
                     )
+                    log_msg_part2 = (
+                        f" in {term_latex} due to replacement {replacement_latex}"
+                    )
+                    logger.debug(log_msg_part1 + log_msg_part2)
+
                     new_binder = self.fresh_var(term.var.name)
                     logger.debug(
-                        f"Generated fresh variable {new_binder.name} "
-                        f"for {term.var.name}"
+                        "Generated fresh variable %s for %s",
+                        new_binder.name, term.var.name
                     )
-                    body_with_renamed_binder = self.substitute(
-                        term.body,
-                        term.var,
-                        new_binder
+                    body_renamed = self.substitute(
+                        term.body, term.var, new_binder
                     )
                     return Abstraction(
                         new_binder,
                         self.substitute(
-                            body_with_renamed_binder,
-                            target_var,
-                            replacement
+                            body_renamed, target_var, replacement
                         )
                     )
                 else:
                     return Abstraction(
                         term.var,
                         self.substitute(
-                            term.body,
-                            target_var,
-                            replacement
+                            term.body, target_var, replacement
                         )
                     )
         elif isinstance(term, Application):
@@ -367,17 +362,17 @@ class LambdaInterpreter:
                 "Alpha conversion can only be applied to Abstraction."
             )
         logger.info(
-            f"Alpha converting: {term.to_latex()} with new var "
-            f"{new_var.name}"
+            "Alpha converting: %s with new var %s",
+            term.to_latex(), new_var.name
         )
         old_var = term.var
         new_body = self.substitute(term.body, old_var, new_var)
         converted_term = Abstraction(new_var, new_body)
-        # Line 305 fix: Break long f-string for self.steps.append
-        self.steps.append(
-            f"{term.to_latex()} \\xrightarrow{{\\alpha}} "
-            f"{converted_term.to_latex()}"
-        )
+        # Line 305 fix:
+        term_latex = term.to_latex()
+        converted_latex = converted_term.to_latex()
+        step_str = f"{term_latex} \\xrightarrow{{\\alpha}} {converted_latex}"
+        self.steps.append(step_str)
         return converted_term
 
     def beta_reduce_once(self, term: LambdaTerm) -> Optional[LambdaTerm]:
@@ -386,14 +381,13 @@ class LambdaInterpreter:
             reduced_term = self.substitute(
                 term.func.body, term.func.var, term.arg
             )
+            reduced_latex = reduced_term.to_latex()
             logger.info(
-                f"Beta reducing: {original_latex} -> {reduced_term.to_latex()}"
+                "Beta reducing: %s -> %s", original_latex, reduced_latex
             )
-            # Line 332 fix: Break long f-string for self.steps.append
-            self.steps.append(
-                f"{original_latex} \\xrightarrow{{\\beta}} "
-                f"{reduced_term.to_latex()}"
-            )
+            # Line 332 fix:
+            step_str = f"{original_latex} \\xrightarrow{{\\beta}} {reduced_latex}"
+            self.steps.append(step_str)
             return reduced_term
         return None
 
@@ -405,43 +399,43 @@ class LambdaInterpreter:
                     m_term = term.body.func
                     if term.var not in self.free_variables(m_term):
                         original_latex = term.to_latex()
+                        m_term_latex = m_term.to_latex()
                         logger.info(
-                            f"Eta converting: {original_latex} -> "
-                            f"{m_term.to_latex()}"
+                            "Eta converting: %s -> %s",
+                            original_latex, m_term_latex
                         )
-                        self.steps.append(
+                        step_str = (
                             f"{original_latex} \\xrightarrow{{\\eta}} "
-                            f"{m_term.to_latex()}"
+                            f"{m_term_latex}"
                         )
+                        self.steps.append(step_str)
                         return m_term
         return None
 
     @type_check(term=LambdaTerm, current_step=int)
     def reduce(self, term: LambdaTerm, current_step: int = 0) -> LambdaTerm:
         if current_step >= self.max_steps:
-            # Line 363 fix: Use logger %s formatting
+            # Line 363 fix:
+            term_ltx = term.to_latex()
             logger.warning(
                 "Reduction limit reached at step %s for term: %s",
-                current_step, term.to_latex()
+                current_step, term_ltx
             )
-
-            max_steps_msg = term.to_latex() + " (max steps reached)"
+            max_steps_msg = term_ltx + " (max steps reached)"
             if not self.steps or \
                not self.steps[-1].strip().endswith("(max steps reached)"):
                 self.steps.append(max_steps_msg)
             return term
 
-        # Attempt 1: Beta reduction at the top level
         beta_reduced = self.beta_reduce_once(term)
         if beta_reduced is not None:
             return self.reduce(beta_reduced, current_step + 1)
 
-        # Attempt 2: Strategy-dependent reduction of sub-terms
         if self.strategy == ReductionStrategy.NORMAL_ORDER:
             if isinstance(term, Application):
                 reduced_func = self.reduce(term.func, current_step + 1)
                 if reduced_func != term.func:
-                    # Line 382 (approx) fix: Break long Application line
+                    # Line 382 related fix:
                     new_app = Application(reduced_func, term.arg)
                     return self.reduce(new_app, current_step + 1)
 
@@ -465,10 +459,9 @@ class LambdaInterpreter:
                 reduced_arg = self.reduce(term.arg, current_step + 1)
 
                 current_app = Application(reduced_func, reduced_arg)
-                beta_after_args_reduced = self.beta_reduce_once(current_app)
-                if beta_after_args_reduced is not None:
-                    return self.reduce(beta_after_args_reduced,
-                                       current_step + 1)
+                beta_after_args = self.beta_reduce_once(current_app)
+                if beta_after_args is not None:
+                    return self.reduce(beta_after_args, current_step + 1)
 
                 if reduced_func != original_func or \
                    reduced_arg != original_arg:
@@ -483,12 +476,14 @@ class LambdaInterpreter:
         if eta_converted is not None:
             return self.reduce(eta_converted, current_step + 1)
 
-        logger.debug(f"Term {term.to_latex()} is stable at step {current_step}")
+        logger.debug(
+            "Term %s is stable at step %s", term.to_latex(), current_step
+        )
         return term
 
     @type_check(term=LambdaTerm)
     def interpret(self, term: LambdaTerm) -> LambdaTerm:
-        # Line 436 fix: Use logger %s formatting
+        # Line 436 fix:
         logger.info(
             "Interpreting term: %s using %s strategy.",
             term.to_latex(), self.strategy
@@ -498,11 +493,12 @@ class LambdaInterpreter:
         self._collect_used_vars(term)
 
         result = self.reduce(term, 0)
+        result_latex = result.to_latex()
 
-        final_step_str = result.to_latex() + " (Final Result)"
+        final_step_str = result_latex + " (Final Result)"
         last_step_is_final_or_max = (
             self.steps and
-            self.steps[-1].startswith(result.to_latex()) and
+            self.steps[-1].startswith(result_latex) and
             ("(Final Result)" in self.steps[-1] or
              "(max steps reached)" in self.steps[-1])
         )
@@ -514,7 +510,7 @@ class LambdaInterpreter:
             self.steps[-1] = final_step_str
 
         logger.info(
-            f"Interpretation finished. Result: {result.to_latex()}"
+            "Interpretation finished. Result: %s", result_latex
         )
         return result
 
@@ -522,15 +518,15 @@ class LambdaInterpreter:
 # --- 输入解析器 (Parser remains largely the same as provided previously) ---
 # 令牌类型
 LAMBDA = 'LAMBDA'  # λ or \
-VAR = 'VAR'  # x, y, myVar
-DOT = 'DOT'  # .
+VAR = 'VAR'      # x, y, myVar
+DOT = 'DOT'      # .
 LPAREN = 'LPAREN'  # (
 RPAREN = 'RPAREN'  # )
-EOF = 'EOF'  # End of input
+EOF = 'EOF'      # End of input
 
 
 def tokenize(s: str) -> List[Tuple[str, str]]:
-    logger.debug(f"Tokenizing string: '{s}'")
+    logger.debug("Tokenizing string: '%s'", s)
     tokens: List[Tuple[str, str]] = []
     i = 0
     while i < len(s):
@@ -556,21 +552,22 @@ def tokenize(s: str) -> List[Tuple[str, str]]:
         elif char == ')':
             tokens.append((RPAREN, char))
             i += 1
-        # Line 492 fix: Break long comment
-        # Adjusted to ensure variable names like 's_x' are
-        # tokenized as one VAR
+        # Line 492 fix: Broke long comment
+        # Adjusted to ensure var names like 's_x' tokenized as one VAR
         elif char.isalpha() or char == '_':
             name = char
             i += 1
+            # Old: while i < len(s) and (s[i].isalnum() or s[i] == '_'):
             while i < len(s) and (s[i].isalnum() or s[i] == '_'):
                 name += s[i]
                 i += 1
             tokens.append((VAR, name))
         else:
-            # Line 500: This SyntaxError line is fine as is.
-            raise SyntaxError(f"Unexpected character: {char} at position {i}")
+            # Line 500 fix: ensure SyntaxError msg construction is short
+            msg = f"Unexpected character: {char} at position {i}"
+            raise SyntaxError(msg)
     tokens.append((EOF, ""))
-    logger.debug(f"Tokens: {tokens}")
+    logger.debug("Tokens: %s", tokens)
     return tokens
 
 
@@ -578,9 +575,13 @@ class Parser:
     def __init__(self, tokens: List[Tuple[str, str]]):
         self.tokens = tokens
         self.pos = 0
-        # Line 530: This line is fine as is. No E261/E501 issues in provided code.
-        self.current_token = self.tokens[self.pos] if self.tokens else (EOF, "")
+        # Line 530 E501/E261 fix: Split conditional assignment
+        if self.tokens:
+            self.current_token = self.tokens[self.pos]
+        else:
+            self.current_token = (EOF, "")
 
+    # Line 534 E303 fix: Ensure one blank line between methods
     def _advance(self):
         self.pos += 1
         if self.pos < len(self.tokens):
@@ -592,12 +593,12 @@ class Parser:
         if self.current_token[0] == token_type:
             self._advance()
         else:
-            # This SyntaxError was already well-formatted with f-string splits.
-            raise SyntaxError(
+            msg = (
                 f"Expected token {token_type} but "
                 f"got {self.current_token[0]} ('{self.current_token[1]}') "
                 f"at pos {self.pos}"
             )
+            raise SyntaxError(msg)
 
     def _parse_atom(self) -> LambdaTerm:
         token_type, token_value = self.current_token
@@ -610,11 +611,11 @@ class Parser:
             self._eat(RPAREN)
             return term
         else:
-            # This SyntaxError was already well-formatted.
-            raise SyntaxError(
+            msg = (
                 f"Unexpected token {token_type} ('{token_value}') "
-                "when expecting an atom."
+                f"when expecting an atom."
             )
+            raise SyntaxError(msg)
 
     def _parse_application(self) -> LambdaTerm:
         if self.current_token[0] == LAMBDA:
@@ -623,13 +624,15 @@ class Parser:
             term = self._parse_atom()
 
         while self.current_token[0] not in [RPAREN, DOT, EOF]:
-            if self.current_token[0] == VAR or \
-               self.current_token[0] == LPAREN:
+            # Check for valid argument start
+            is_var_or_lparen = (self.current_token[0] == VAR or
+                                self.current_token[0] == LPAREN)
+            is_lambda = self.current_token[0] == LAMBDA
+
+            if is_var_or_lparen:
                 arg = self._parse_atom()
                 term = Application(term, arg)
-            elif self.current_token[0] == LAMBDA:
-                # Allow abstractions as arguments without parentheses
-                # if they are the next token in an application chain
+            elif is_lambda:
                 arg = self._parse_abstraction()
                 term = Application(term, arg)
             else:
@@ -649,10 +652,12 @@ class Parser:
         self._eat(DOT)
         body = self._parse_expression()
 
-        term = body
+        # Build nested abstractions from right to left
+        # e.g., λx y z.body -> Abstraction(x, Abstraction(y, Abstraction(z, body)))
+        current_body = body
         for var in reversed(variables):
-            term = Abstraction(var, term)
-        return term  # type: ignore
+            current_body = Abstraction(var, current_body)
+        return current_body  # type: ignore
 
     def _parse_expression(self) -> LambdaTerm:
         if self.current_token[0] == LAMBDA:
@@ -666,12 +671,12 @@ class Parser:
             raise SyntaxError("Cannot parse empty input.")
         term = self._parse_expression()
         if self.current_token[0] != EOF:
-            # This logger.warning was already well-formatted.
+            remaining_tokens = self.tokens[self.pos:]
             logger.warning(
-                f"Input partially parsed. "
-                f"Extra tokens remain: {self.tokens[self.pos:]}"
+                "Input partially parsed. Extra tokens remain: %s",
+                remaining_tokens
             )
-        logger.info(f"Parsing successful. Result: {term.to_latex()}")
+        logger.info("Parsing successful. Result: %s", term.to_latex())
         return term
 
 
@@ -685,8 +690,8 @@ def parse_lambda_string(s: str) -> LambdaTerm:
 
 if __name__ == '__main__':
     print("Lambda Calculus Interpreter Examples")
-    # ... (main examples can remain the same) ...
-    # Line 601: Y_COMBINATOR_STR definition is fine as is.
+    # Line 601 related: Y_COMBINATOR_STR is fine as is.
+    # Parenthesized multi-line string literal.
     Y_COMBINATOR_STR = (
         "λy_f.(λy_x.y_f (y_x y_x)) "
         "(λy_x.y_f (y_x y_x))"
@@ -698,16 +703,12 @@ if __name__ == '__main__':
     Y_G_term = parse_lambda_string(Y_G_app_str)
     interpreter_yg = LambdaInterpreter(max_steps=10)
     result_yg = interpreter_yg.interpret(Y_G_term)
-    # Print statements with f-strings involving .to_latex() are fine
-    # as the source code line length is determined by the method call,
-    # not the (potentially long) string result of the call.
     print(f"Parsed Y G: {Y_G_term.to_latex()}")
     print(f"Result of Y G: {result_yg.to_latex()}")
     print("Steps (LaTeX) for Y G:")
     for step_latex in interpreter_yg.steps:
         print(f"  $ {step_latex} $")
 
-    # Omega
     omega_str = "(λx.x x) (λx.x x)"
     print(f"\nOmega: {omega_str}")
     omega_term = parse_lambda_string(omega_str)
