@@ -638,7 +638,7 @@ class Parser:
             raise SyntaxError("Expected at least one variable after lambda.")
 
         self._eat(DOT)
-        body: lambdaTerm = self._parse_expression()
+        body: LambdaTerm = self._parse_expression()
 
         # Build nested abstractions from right to left
         term_being_built: LambdaTerm = body
