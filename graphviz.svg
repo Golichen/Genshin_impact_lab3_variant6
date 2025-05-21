@@ -1,0 +1,382 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1441pt" height="986pt" viewBox="0.00 0.00 1441.02 986.35">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 982.35)">
+<title>LambdaCalculusSystem</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-982.35 1437.02,-982.35 1437.02,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster_main_code</title>
+<polygon fill="lightgrey" stroke="lightgrey" points="8,-8 8,-970.35 784,-970.35 784,-8 8,-8"/>
+<text text-anchor="middle" x="396" y="-955.55" font-family="Times,serif" font-size="12.00">lambda_calculus.py (Core Logic)</text>
+</g>
+<g id="clust2" class="cluster">
+<title>cluster_test_code</title>
+<polygon fill="lightgrey" stroke="lightgrey" points="792,-426.65 792,-821.15 1062,-821.15 1062,-426.65 792,-426.65"/>
+<text text-anchor="middle" x="927" y="-806.35" font-family="Times,serif" font-size="12.00">test_lambda_calculus.py (Unit Tests)</text>
+</g>
+<!-- LambdaTerm -->
+<g id="node1" class="node">
+<title>LambdaTerm</title>
+<ellipse fill="#add8e6" stroke="black" cx="175" cy="-248.37" rx="70.18" ry="29.42"/>
+<text text-anchor="middle" x="175" y="-252.57" font-family="Helvetica,sans-Serif" font-size="14.00">LambdaTerm</text>
+<text text-anchor="middle" x="175" y="-235.77" font-family="Helvetica,sans-Serif" font-size="14.00">(Base Class)</text>
+</g>
+<!-- Variable -->
+<g id="node2" class="node">
+<title>Variable</title>
+<path fill="#add8e6" stroke="black" d="M546.84,-57.6C546.84,-57.6 487.16,-57.6 487.16,-57.6 481.16,-57.6 475.16,-51.6 475.16,-45.6 475.16,-45.6 475.16,-28 475.16,-28 475.16,-22 481.16,-16 487.16,-16 487.16,-16 546.84,-16 546.84,-16 552.84,-16 558.84,-22 558.84,-28 558.84,-28 558.84,-45.6 558.84,-45.6 558.84,-51.6 552.84,-57.6 546.84,-57.6"/>
+<text text-anchor="middle" x="517" y="-41" font-family="Helvetica,sans-Serif" font-size="14.00">Variable</text>
+<text text-anchor="middle" x="517" y="-24.2" font-family="Helvetica,sans-Serif" font-size="14.00">(name: str)</text>
+</g>
+<!-- LambdaTerm&#45;&gt;Variable -->
+<g id="edge1" class="edge">
+<title>LambdaTerm-&gt;Variable</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M138.53,-222.83C99.41,-193.54 47.06,-143.76 79.76,-105.6 128.6,-48.6 357.67,-39.12 463.35,-37.82"/>
+<polygon fill="none" stroke="black" points="463.22,-41.32 473.18,-37.72 463.15,-34.32 463.22,-41.32"/>
+<text text-anchor="middle" x="95.88" y="-123.4" font-family="Helvetica,sans-Serif" font-size="10.00">inherits</text>
+</g>
+<!-- Abstraction -->
+<g id="node3" class="node">
+<title>Abstraction</title>
+<path fill="#add8e6" stroke="black" d="M621.54,-147.2C621.54,-147.2 412.46,-147.2 412.46,-147.2 406.46,-147.2 400.46,-141.2 400.46,-135.2 400.46,-135.2 400.46,-117.6 400.46,-117.6 400.46,-111.6 406.46,-105.6 412.46,-105.6 412.46,-105.6 621.54,-105.6 621.54,-105.6 627.54,-105.6 633.54,-111.6 633.54,-117.6 633.54,-117.6 633.54,-135.2 633.54,-135.2 633.54,-141.2 627.54,-147.2 621.54,-147.2"/>
+<text text-anchor="middle" x="517" y="-130.6" font-family="Helvetica,sans-Serif" font-size="14.00">Abstraction</text>
+<text text-anchor="middle" x="517" y="-113.8" font-family="Helvetica,sans-Serif" font-size="14.00">(var: Variable, body: LambdaTerm)</text>
+</g>
+<!-- LambdaTerm&#45;&gt;Abstraction -->
+<g id="edge2" class="edge">
+<title>LambdaTerm-&gt;Abstraction</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M195.23,-219.77C210.5,-201.14 233.15,-177.74 258.76,-165.2 309.29,-140.48 330.37,-154.04 388.87,-147.46"/>
+<polygon fill="none" stroke="black" points="389.27,-150.93 398.74,-146.18 388.37,-143.99 389.27,-150.93"/>
+<text text-anchor="middle" x="274.88" y="-168.2" font-family="Helvetica,sans-Serif" font-size="10.00">inherits</text>
+</g>
+<!-- Application -->
+<g id="node4" class="node">
+<title>Application</title>
+<path fill="#add8e6" stroke="black" d="M370.93,-147.2C370.93,-147.2 133.07,-147.2 133.07,-147.2 127.07,-147.2 121.07,-141.2 121.07,-135.2 121.07,-135.2 121.07,-117.6 121.07,-117.6 121.07,-111.6 127.07,-105.6 133.07,-105.6 133.07,-105.6 370.93,-105.6 370.93,-105.6 376.93,-105.6 382.93,-111.6 382.93,-117.6 382.93,-117.6 382.93,-135.2 382.93,-135.2 382.93,-141.2 376.93,-147.2 370.93,-147.2"/>
+<text text-anchor="middle" x="252" y="-130.6" font-family="Helvetica,sans-Serif" font-size="14.00">Application</text>
+<text text-anchor="middle" x="252" y="-113.8" font-family="Helvetica,sans-Serif" font-size="14.00">(func: LambdaTerm, arg: LambdaTerm)</text>
+</g>
+<!-- LambdaTerm&#45;&gt;Application -->
+<g id="edge3" class="edge">
+<title>LambdaTerm-&gt;Application</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M133.87,-224.14C110.54,-207.94 88.89,-185.66 104.76,-165.2 108.74,-160.08 116.61,-155.53 126.73,-151.52"/>
+<polygon fill="none" stroke="black" points="127.86,-154.84 136.12,-148.2 125.53,-148.24 127.86,-154.84"/>
+<text text-anchor="middle" x="120.88" y="-168.2" font-family="Helvetica,sans-Serif" font-size="10.00">inherits</text>
+</g>
+<!-- Abstraction&#45;&gt;LambdaTerm -->
+<g id="edge16" class="edge">
+<title>Abstraction-&gt;LambdaTerm</title>
+<path fill="none" stroke="black" d="M400.1,-146.03C364.75,-152.35 330.91,-159.31 314.29,-165.2 307.7,-167.54 265.04,-191.69 259,-195.2 247.06,-202.14 234.32,-209.87 222.47,-217.21"/>
+<polygon fill="black" stroke="black" points="220.69,-214.2 214.05,-222.46 224.39,-220.15 220.69,-214.2"/>
+<text text-anchor="middle" x="345.15" y="-168.2" font-family="Helvetica,sans-Serif" font-size="10.00">contains body</text>
+</g>
+<!-- Abstraction&#45;&gt;Variable -->
+<g id="edge15" class="edge">
+<title>Abstraction-&gt;Variable</title>
+<path fill="none" stroke="black" d="M517,-105.52C517,-94.85 517,-81.43 517,-69.37"/>
+<polygon fill="black" stroke="black" points="520.5,-69.42 517,-59.42 513.5,-69.42 520.5,-69.42"/>
+<text text-anchor="middle" x="550.92" y="-78.6" font-family="Helvetica,sans-Serif" font-size="10.00">contains bound</text>
+</g>
+<!-- Application&#45;&gt;LambdaTerm -->
+<g id="edge17" class="edge">
+<title>Application-&gt;LambdaTerm</title>
+<path fill="none" stroke="black" d="M178.37,-147.49C171.11,-152.2 164.66,-158.02 159.84,-165.2 151.34,-177.87 152.39,-194.01 156.57,-208.61"/>
+<polygon fill="black" stroke="black" points="153.22,-209.65 159.78,-217.97 159.84,-207.38 153.22,-209.65"/>
+<text text-anchor="middle" x="197.92" y="-168.2" font-family="Helvetica,sans-Serif" font-size="10.00">contains func/arg</text>
+</g>
+<!-- LambdaInterpreter -->
+<g id="node5" class="node">
+<title>LambdaInterpreter</title>
+<path fill="#add8e6" stroke="black" d="M454.35,-350.05C454.35,-350.05 627.65,-350.05 627.65,-350.05 633.65,-350.05 639.65,-356.05 639.65,-362.05 639.65,-362.05 639.65,-564.45 639.65,-564.45 639.65,-570.45 633.65,-576.45 627.65,-576.45 627.65,-576.45 454.35,-576.45 454.35,-576.45 448.35,-576.45 442.35,-570.45 442.35,-564.45 442.35,-564.45 442.35,-362.05 442.35,-362.05 442.35,-356.05 448.35,-350.05 454.35,-350.05"/>
+<text text-anchor="middle" x="541" y="-559.85" font-family="Helvetica,sans-Serif" font-size="14.00">LambdaInterpreter</text>
+<text text-anchor="middle" x="541" y="-543.05" font-family="Helvetica,sans-Serif" font-size="14.00">- strategy: ReductionStrategy</text>
+<text text-anchor="middle" x="541" y="-526.25" font-family="Helvetica,sans-Serif" font-size="14.00">- max_steps: int</text>
+<text text-anchor="middle" x="541" y="-509.45" font-family="Helvetica,sans-Serif" font-size="14.00">- steps: List[str]</text>
+<text text-anchor="middle" x="541" y="-492.65" font-family="Helvetica,sans-Serif" font-size="14.00">- used_var_names: Set[str]</text>
+<text text-anchor="middle" x="541" y="-475.85" font-family="Helvetica,sans-Serif" font-size="14.00">+ interpret()</text>
+<text text-anchor="middle" x="541" y="-459.05" font-family="Helvetica,sans-Serif" font-size="14.00">+ reduce()</text>
+<text text-anchor="middle" x="541" y="-442.25" font-family="Helvetica,sans-Serif" font-size="14.00">+ substitute()</text>
+<text text-anchor="middle" x="541" y="-425.45" font-family="Helvetica,sans-Serif" font-size="14.00">+ beta_reduce_once()</text>
+<text text-anchor="middle" x="541" y="-408.65" font-family="Helvetica,sans-Serif" font-size="14.00">+ eta_convert_once()</text>
+<text text-anchor="middle" x="541" y="-391.85" font-family="Helvetica,sans-Serif" font-size="14.00">+ alpha_convert()</text>
+<text text-anchor="middle" x="541" y="-375.05" font-family="Helvetica,sans-Serif" font-size="14.00">+ free_variables()</text>
+<text text-anchor="middle" x="541" y="-358.25" font-family="Helvetica,sans-Serif" font-size="14.00">+ fresh_var()</text>
+</g>
+<!-- LambdaInterpreter&#45;&gt;LambdaTerm -->
+<g id="edge11" class="edge">
+<title>LambdaInterpreter-&gt;LambdaTerm</title>
+<path fill="none" stroke="black" d="M441.99,-358.08C437.4,-355.02 432.73,-352.15 428,-349.55 396.24,-332.06 382.51,-343.91 348.42,-331.55 337.43,-327.56 335.91,-323.78 325,-319.55 296.65,-308.56 286.87,-313.7 259,-301.55 245.59,-295.7 231.8,-287.97 219.37,-280.25"/>
+<polygon fill="black" stroke="black" points="221.31,-277.34 211,-274.91 217.55,-283.24 221.31,-277.34"/>
+<text text-anchor="middle" x="371.21" y="-322.55" font-family="Helvetica,sans-Serif" font-size="10.00">processes</text>
+</g>
+<!-- LambdaInterpreter&#45;&gt;Variable -->
+<g id="edge12" class="edge">
+<title>LambdaInterpreter-&gt;Variable</title>
+<path fill="none" stroke="black" d="M519.85,-349.68C510.95,-288.42 506.1,-220.16 523,-195.2 555.2,-147.63 610.8,-194.77 643,-147.2 653.37,-131.89 652.38,-121.54 643,-105.6 627.21,-78.76 596.67,-61.95 569.61,-51.78"/>
+<polygon fill="black" stroke="black" points="571.09,-48.59 560.49,-48.58 568.77,-55.19 571.09,-48.59"/>
+<text text-anchor="middle" x="692.47" y="-168.2" font-family="Helvetica,sans-Serif" font-size="10.00">manipulates/creates (fresh_var)</text>
+</g>
+<!-- LambdaInterpreter&#45;&gt;Abstraction -->
+<g id="edge13" class="edge">
+<title>LambdaInterpreter-&gt;Abstraction</title>
+<path fill="none" stroke="black" d="M471.29,-349.66C464.23,-333.97 458.17,-317.69 454.08,-301.55 442.48,-255.73 436.81,-239.2 454.08,-195.2 460.03,-180.04 471.13,-166.26 482.38,-155.13"/>
+<polygon fill="black" stroke="black" points="484.5,-157.94 489.42,-148.56 479.72,-152.83 484.5,-157.94"/>
+<text text-anchor="middle" x="481.04" y="-245.37" font-family="Helvetica,sans-Serif" font-size="10.00">manipulates</text>
+</g>
+<!-- LambdaInterpreter&#45;&gt;Application -->
+<g id="edge14" class="edge">
+<title>LambdaInterpreter-&gt;Application</title>
+<path fill="none" stroke="black" d="M442.11,-354.69C440.4,-352.96 438.69,-351.24 437,-349.55 414.79,-327.32 398.21,-330.1 385.08,-301.55 378.75,-287.77 389.3,-177.17 380,-165.2 376.84,-161.13 373.25,-157.48 369.35,-154.21"/>
+<polygon fill="black" stroke="black" points="371.7,-151.59 361.56,-148.53 367.58,-157.24 371.7,-151.59"/>
+<text text-anchor="middle" x="412.04" y="-245.37" font-family="Helvetica,sans-Serif" font-size="10.00">manipulates</text>
+</g>
+<!-- ReductionStrategy -->
+<g id="node6" class="node">
+<title>ReductionStrategy</title>
+<ellipse fill="#90ee90" stroke="black" cx="654" cy="-248.37" rx="122.44" ry="53.17"/>
+<text text-anchor="middle" x="654" y="-269.37" font-family="Helvetica,sans-Serif" font-size="14.00">ReductionStrategy</text>
+<text text-anchor="middle" x="654" y="-252.57" font-family="Helvetica,sans-Serif" font-size="14.00">(Enum:</text>
+<text text-anchor="middle" x="654" y="-235.77" font-family="Helvetica,sans-Serif" font-size="14.00"> NORMAL_ORDER,</text>
+<text text-anchor="middle" x="654" y="-218.97" font-family="Helvetica,sans-Serif" font-size="14.00"> APPLICATIVE_ORDER)</text>
+</g>
+<!-- LambdaInterpreter&#45;&gt;ReductionStrategy -->
+<g id="edge10" class="edge">
+<title>LambdaInterpreter-&gt;ReductionStrategy</title>
+<path fill="none" stroke="black" d="M600.81,-349.58C607.92,-336.18 614.97,-322.91 621.49,-310.62"/>
+<polygon fill="black" stroke="black" points="624.52,-312.37 626.12,-301.89 618.34,-309.09 624.52,-312.37"/>
+<text text-anchor="middle" x="624.79" y="-322.55" font-family="Helvetica,sans-Serif" font-size="10.00">uses</text>
+</g>
+<!-- Parser -->
+<g id="node7" class="node">
+<title>Parser</title>
+<path fill="#add8e6" stroke="black" d="M47.77,-383.65C47.77,-383.65 180.23,-383.65 180.23,-383.65 186.23,-383.65 192.23,-389.65 192.23,-395.65 192.23,-395.65 192.23,-530.85 192.23,-530.85 192.23,-536.85 186.23,-542.85 180.23,-542.85 180.23,-542.85 47.77,-542.85 47.77,-542.85 41.77,-542.85 35.77,-536.85 35.77,-530.85 35.77,-530.85 35.77,-395.65 35.77,-395.65 35.77,-389.65 41.77,-383.65 47.77,-383.65"/>
+<text text-anchor="middle" x="114" y="-526.25" font-family="Helvetica,sans-Serif" font-size="14.00">Parser</text>
+<text text-anchor="middle" x="114" y="-509.45" font-family="Helvetica,sans-Serif" font-size="14.00">- tokens: List</text>
+<text text-anchor="middle" x="114" y="-492.65" font-family="Helvetica,sans-Serif" font-size="14.00">- pos: int</text>
+<text text-anchor="middle" x="114" y="-475.85" font-family="Helvetica,sans-Serif" font-size="14.00">- current_token: Tuple</text>
+<text text-anchor="middle" x="114" y="-459.05" font-family="Helvetica,sans-Serif" font-size="14.00">+ parse()</text>
+<text text-anchor="middle" x="114" y="-442.25" font-family="Helvetica,sans-Serif" font-size="14.00">+ _parse_expression()</text>
+<text text-anchor="middle" x="114" y="-425.45" font-family="Helvetica,sans-Serif" font-size="14.00">+ _parse_abstraction()</text>
+<text text-anchor="middle" x="114" y="-408.65" font-family="Helvetica,sans-Serif" font-size="14.00">+ _parse_application()</text>
+<text text-anchor="middle" x="114" y="-391.85" font-family="Helvetica,sans-Serif" font-size="14.00">+ _parse_atom()</text>
+</g>
+<!-- Parser&#45;&gt;LambdaTerm -->
+<g id="edge9" class="edge">
+<title>Parser-&gt;LambdaTerm</title>
+<path fill="none" stroke="black" d="M136.63,-383.28C145.85,-351.09 156.11,-315.29 163.7,-288.81"/>
+<polygon fill="black" stroke="black" points="166.97,-290.1 166.36,-279.53 160.24,-288.17 166.97,-290.1"/>
+<text text-anchor="middle" x="187.99" y="-322.55" font-family="Helvetica,sans-Serif" font-size="10.00">returns types of</text>
+</g>
+<!-- Parser&#45;&gt;Variable -->
+<g id="edge6" class="edge">
+<title>Parser-&gt;Variable</title>
+<path fill="none" stroke="black" d="M72.77,-383.35C65.09,-366.56 57.69,-348.71 52,-331.55 20.34,-236.07 4.74,-186.14 65,-105.6 77.27,-89.2 81.13,-83.57 100,-75.6 164.19,-48.5 366.09,-40.79 463.45,-38.63"/>
+<polygon fill="black" stroke="black" points="463.35,-42.13 473.28,-38.42 463.21,-35.13 463.35,-42.13"/>
+<text text-anchor="middle" x="48.06" y="-168.2" font-family="Helvetica,sans-Serif" font-size="10.00">creates</text>
+</g>
+<!-- Parser&#45;&gt;Abstraction -->
+<g id="edge7" class="edge">
+<title>Parser-&gt;Abstraction</title>
+<path fill="none" stroke="black" d="M170.16,-383.35C179.9,-371.53 190.34,-359.86 201,-349.55 210.84,-340.03 215.72,-340.6 226,-331.55 286.63,-278.16 280.32,-241.96 346.21,-195.2 363.25,-183.11 407.57,-165.64 446.78,-151.46"/>
+<polygon fill="black" stroke="black" points="447.76,-154.83 455.99,-148.16 445.4,-148.24 447.76,-154.83"/>
+<text text-anchor="middle" x="362.6" y="-245.37" font-family="Helvetica,sans-Serif" font-size="10.00">creates</text>
+</g>
+<!-- Parser&#45;&gt;Application -->
+<g id="edge8" class="edge">
+<title>Parser-&gt;Application</title>
+<path fill="none" stroke="black" d="M75.18,-383.22C53.95,-328.54 36.81,-255.13 63.21,-195.2 72.62,-173.84 90.04,-159.01 110.64,-148.77"/>
+<polygon fill="black" stroke="black" points="111.93,-152.02 119.61,-144.72 109.05,-145.64 111.93,-152.02"/>
+<text text-anchor="middle" x="79.6" y="-245.37" font-family="Helvetica,sans-Serif" font-size="10.00">creates</text>
+</g>
+<!-- tokenize -->
+<g id="node8" class="node">
+<title>tokenize</title>
+<polygon fill="#ffffe0" stroke="black" points="329.57,-478.05 210.43,-478.05 210.43,-448.45 329.57,-448.45 341.57,-463.25 329.57,-478.05"/>
+<text text-anchor="middle" x="276" y="-467.45" font-family="Helvetica,sans-Serif" font-size="14.00">tokenize(s: str)</text>
+<text text-anchor="middle" x="276" y="-450.65" font-family="Helvetica,sans-Serif" font-size="14.00">: List[Tuple[str,str]]</text>
+</g>
+<!-- parse_lambda_string -->
+<g id="node9" class="node">
+<title>parse_lambda_string</title>
+<polygon fill="#ffffe0" stroke="black" points="314.2,-711.45 139.8,-711.45 139.8,-681.85 314.2,-681.85 326.2,-696.65 314.2,-711.45"/>
+<text text-anchor="middle" x="233" y="-700.85" font-family="Helvetica,sans-Serif" font-size="14.00">parse_lambda_string(s: str)</text>
+<text text-anchor="middle" x="233" y="-684.05" font-family="Helvetica,sans-Serif" font-size="14.00">: LambdaTerm</text>
+</g>
+<!-- parse_lambda_string&#45;&gt;Parser -->
+<g id="edge5" class="edge">
+<title>parse_lambda_string-&gt;Parser</title>
+<path fill="none" stroke="black" d="M222.65,-675.52C208.64,-648.28 182.74,-597.93 159.75,-553.21"/>
+<polygon fill="black" stroke="black" points="162.97,-551.81 155.28,-544.52 156.74,-555.02 162.97,-551.81"/>
+</g>
+<!-- parse_lambda_string&#45;&gt;tokenize -->
+<g id="edge4" class="edge">
+<title>parse_lambda_string-&gt;tokenize</title>
+<path fill="none" stroke="black" d="M232.63,-675.44C232.57,-655 233.36,-622.57 238,-594.95 243.86,-560.03 255.88,-521.22 264.84,-495.03"/>
+<polygon fill="black" stroke="black" points="268.1,-496.31 268.09,-485.71 261.49,-494 268.1,-496.31"/>
+</g>
+<!-- Decorators -->
+<g id="node10" class="node">
+<title>Decorators</title>
+<polygon fill="#ffdab9" stroke="black" points="321.15,-917.55 144.85,-917.55 144.85,-913.55 140.85,-913.55 140.85,-909.55 144.85,-909.55 144.85,-867.15 140.85,-867.15 140.85,-863.15 144.85,-863.15 144.85,-859.15 321.15,-859.15 321.15,-917.55"/>
+<polyline fill="none" stroke="black" points="144.85,-913.55 148.85,-913.55 148.85,-909.55 144.85,-909.55"/>
+<polyline fill="none" stroke="black" points="144.85,-867.15 148.85,-867.15 148.85,-863.15 144.85,-863.15"/>
+<text text-anchor="middle" x="233" y="-900.95" font-family="Helvetica,sans-Serif" font-size="14.00">Decorators</text>
+<text text-anchor="middle" x="233" y="-884.15" font-family="Helvetica,sans-Serif" font-size="14.00">(type_check,</text>
+<text text-anchor="middle" x="233" y="-867.35" font-family="Helvetica,sans-Serif" font-size="14.00">non_empty_string_check)</text>
+</g>
+<!-- Decorators&#45;&gt;LambdaTerm -->
+<g id="edge18" class="edge">
+<title>Decorators-&gt;LambdaTerm</title>
+<path fill="none" stroke="black" d="M176.17,-858.79C160,-848.61 143.43,-835.94 131,-821.15 55.11,-730.84 50.59,-692.53 27,-576.95 6.79,-477.92 -20.97,-438.5 27,-349.55 45.43,-315.37 67.84,-323.3 100,-301.55 109.86,-294.88 120.38,-287.64 130.33,-280.74"/>
+<polygon fill="black" stroke="black" points="132.2,-283.7 138.41,-275.11 128.2,-277.95 132.2,-283.7"/>
+<text text-anchor="middle" x="65.71" y="-597.95" font-family="Helvetica,sans-Serif" font-size="10.00">validates init of</text>
+</g>
+<!-- Decorators&#45;&gt;LambdaInterpreter -->
+<g id="edge19" class="edge">
+<title>Decorators-&gt;LambdaInterpreter</title>
+<path fill="none" stroke="black" d="M321.5,-875.29C386.92,-864.49 468.39,-846.45 491,-821.15 546.84,-758.68 557.94,-663.91 555.83,-587.72"/>
+<polygon fill="black" stroke="black" points="559.34,-588 555.48,-578.13 552.35,-588.25 559.34,-588"/>
+<text text-anchor="middle" x="588.66" y="-693.65" font-family="Helvetica,sans-Serif" font-size="10.00">validates init of</text>
+</g>
+<!-- Decorators&#45;&gt;parse_lambda_string -->
+<g id="edge20" class="edge">
+<title>Decorators-&gt;parse_lambda_string</title>
+<path fill="none" stroke="black" d="M233,-858.95C233,-824.13 233,-765.29 233,-729.12"/>
+<polygon fill="black" stroke="black" points="236.5,-729.3 233,-719.3 229.5,-729.3 236.5,-729.3"/>
+<text text-anchor="middle" x="270.52" y="-832.15" font-family="Helvetica,sans-Serif" font-size="10.00">validates input to</text>
+</g>
+<!-- Logger_Core -->
+<g id="node11" class="node">
+<title>Logger_Core</title>
+<path fill="#d3d3d3" stroke="black" d="M481.71,-720.05C481.71,-722.92 450.91,-725.25 413,-725.25 375.09,-725.25 344.29,-722.92 344.29,-720.05 344.29,-720.05 344.29,-673.25 344.29,-673.25 344.29,-670.38 375.09,-668.05 413,-668.05 450.91,-668.05 481.71,-670.38 481.71,-673.25 481.71,-673.25 481.71,-720.05 481.71,-720.05"/>
+<path fill="none" stroke="black" d="M481.71,-720.05C481.71,-717.18 450.91,-714.85 413,-714.85 375.09,-714.85 344.29,-717.18 344.29,-720.05"/>
+<text text-anchor="middle" x="413" y="-700.85" font-family="Helvetica,sans-Serif" font-size="14.00">Logger</text>
+<text text-anchor="middle" x="413" y="-684.05" font-family="Helvetica,sans-Serif" font-size="14.00">(logging.getLogger)</text>
+</g>
+<!-- Logger_Core&#45;&gt;LambdaTerm -->
+<g id="edge21" class="edge">
+<title>Logger_Core-&gt;LambdaTerm</title>
+<path fill="none" stroke="black" d="M406.4,-667.93C400.8,-643.93 392.76,-608.26 386.85,-576.95 367.87,-476.41 410.71,-432.63 351,-349.55 337.54,-330.82 279.03,-312.97 259,-301.55 247,-294.7 234.24,-287.01 222.39,-279.67"/>
+<polygon fill="black" stroke="black" points="224.31,-276.74 213.97,-274.42 220.61,-282.68 224.31,-276.74"/>
+<text text-anchor="middle" x="409.93" y="-460.25" font-family="Helvetica,sans-Serif" font-size="10.00">logs about</text>
+</g>
+<!-- Logger_Core&#45;&gt;LambdaInterpreter -->
+<g id="edge22" class="edge">
+<title>Logger_Core-&gt;LambdaInterpreter</title>
+<path fill="none" stroke="black" d="M428.44,-667.74C439.9,-647.02 456.4,-617.19 473.25,-586.74"/>
+<polygon fill="black" stroke="black" points="476.21,-588.61 477.99,-578.16 470.09,-585.22 476.21,-588.61"/>
+<text text-anchor="middle" x="488.61" y="-597.95" font-family="Helvetica,sans-Serif" font-size="10.00">logs about</text>
+</g>
+<!-- Logger_Core&#45;&gt;Parser -->
+<g id="edge23" class="edge">
+<title>Logger_Core-&gt;Parser</title>
+<path fill="none" stroke="black" d="M388.34,-667.74C374.06,-653.12 354.99,-636 335,-624.95 309.08,-610.62 298.77,-616.81 270.85,-606.95 238.99,-595.69 227.7,-597.65 201,-576.95 191.5,-569.59 182.48,-560.95 174.08,-551.8"/>
+<polygon fill="black" stroke="black" points="176.8,-549.59 167.56,-544.41 171.55,-554.22 176.8,-549.59"/>
+<text text-anchor="middle" x="293.93" y="-597.95" font-family="Helvetica,sans-Serif" font-size="10.00">logs about</text>
+</g>
+<!-- Logger_Core&#45;&gt;tokenize -->
+<g id="edge24" class="edge">
+<title>Logger_Core-&gt;tokenize</title>
+<path fill="none" stroke="black" d="M379.55,-667.64C361.9,-651.41 341.03,-629.73 326.85,-606.95 304.9,-571.66 290.67,-525.56 283,-495.45"/>
+<polygon fill="black" stroke="black" points="286.42,-494.72 280.64,-485.83 279.62,-496.38 286.42,-494.72"/>
+<text text-anchor="middle" x="349.93" y="-597.95" font-family="Helvetica,sans-Serif" font-size="10.00">logs about</text>
+</g>
+<!-- Logger_Test -->
+<g id="node14" class="node">
+<title>Logger_Test</title>
+<path fill="#d3d3d3" stroke="black" d="M917.97,-486.65C917.97,-489.52 891.54,-491.85 859,-491.85 826.46,-491.85 800.03,-489.52 800.03,-486.65 800.03,-486.65 800.03,-439.85 800.03,-439.85 800.03,-436.98 826.46,-434.65 859,-434.65 891.54,-434.65 917.97,-436.98 917.97,-439.85 917.97,-439.85 917.97,-486.65 917.97,-486.65"/>
+<path fill="none" stroke="black" d="M917.97,-486.65C917.97,-483.78 891.54,-481.45 859,-481.45 826.46,-481.45 800.03,-483.78 800.03,-486.65"/>
+<text text-anchor="middle" x="859" y="-467.45" font-family="Helvetica,sans-Serif" font-size="14.00">Logger</text>
+<text text-anchor="middle" x="859" y="-450.65" font-family="Helvetica,sans-Serif" font-size="14.00">(lambda_logger)</text>
+</g>
+<!-- Logger_Core&#45;&gt;Logger_Test -->
+<!-- TestLambdaCalculus -->
+<g id="node12" class="node">
+<title>TestLambdaCalculus</title>
+<path fill="#98fb98" stroke="black" d="M904.25,-625.45C904.25,-625.45 1027.75,-625.45 1027.75,-625.45 1033.75,-625.45 1039.75,-631.45 1039.75,-637.45 1039.75,-637.45 1039.75,-755.85 1039.75,-755.85 1039.75,-761.85 1033.75,-767.85 1027.75,-767.85 1027.75,-767.85 904.25,-767.85 904.25,-767.85 898.25,-767.85 892.25,-761.85 892.25,-755.85 892.25,-755.85 892.25,-637.45 892.25,-637.45 892.25,-631.45 898.25,-625.45 904.25,-625.45"/>
+<text text-anchor="middle" x="966" y="-751.25" font-family="Helvetica,sans-Serif" font-size="14.00">TestLambdaCalculus</text>
+<text text-anchor="middle" x="966" y="-734.45" font-family="Helvetica,sans-Serif" font-size="14.00">(unittest.TestCase)</text>
+<text text-anchor="middle" x="966" y="-717.65" font-family="Helvetica,sans-Serif" font-size="14.00">+ test_variable()</text>
+<text text-anchor="middle" x="966" y="-700.85" font-family="Helvetica,sans-Serif" font-size="14.00">+ test_abstraction()</text>
+<text text-anchor="middle" x="966" y="-684.05" font-family="Helvetica,sans-Serif" font-size="14.00">+ test_application()</text>
+<text text-anchor="middle" x="966" y="-667.25" font-family="Helvetica,sans-Serif" font-size="14.00">+ test_parse_...()</text>
+<text text-anchor="middle" x="966" y="-650.45" font-family="Helvetica,sans-Serif" font-size="14.00">+ test_interpret_...()</text>
+<text text-anchor="middle" x="966" y="-633.65" font-family="Helvetica,sans-Serif" font-size="14.00">+ ...</text>
+</g>
+<!-- TestLambdaCalculus&#45;&gt;Variable -->
+<g id="edge28" class="edge">
+<title>TestLambdaCalculus-&gt;Variable</title>
+<path fill="none" stroke="black" d="M1039.99,-688.53C1161.02,-672.36 1388,-621.12 1388,-464.25 1388,-464.25 1388,-464.25 1388,-125.4 1388,-42.83 760.29,-37.32 570.63,-37.54"/>
+<polygon fill="black" stroke="black" points="570.81,-34.04 560.82,-37.56 570.82,-41.04 570.81,-34.04"/>
+<text text-anchor="middle" x="1410.51" y="-245.37" font-family="Helvetica,sans-Serif" font-size="10.00">tests/uses</text>
+</g>
+<!-- TestLambdaCalculus&#45;&gt;Abstraction -->
+<g id="edge29" class="edge">
+<title>TestLambdaCalculus-&gt;Abstraction</title>
+<path fill="none" stroke="black" d="M1040.19,-690.23C1111.58,-680.46 1214.86,-653.14 1258,-576.95 1307.8,-489 1314.85,-433.11 1258,-349.55 1247.09,-333.51 1184.72,-273.23 767,-165.2 727.85,-155.08 684.5,-147.34 645.05,-141.59"/>
+<polygon fill="black" stroke="black" points="645.65,-138.14 635.26,-140.2 644.66,-145.07 645.65,-138.14"/>
+<text text-anchor="middle" x="1261" y="-322.55" font-family="Helvetica,sans-Serif" font-size="10.00">tests/uses</text>
+</g>
+<!-- TestLambdaCalculus&#45;&gt;Application -->
+<g id="edge30" class="edge">
+<title>TestLambdaCalculus-&gt;Application</title>
+<path fill="none" stroke="black" d="M1039.9,-681.05C1128.99,-661.55 1269.62,-623.91 1292,-576.95 1341.22,-473.67 1362.38,-406.49 1288,-319.55 1131.01,-136.03 1005.11,-205.56 767,-165.2 605.59,-137.84 559.52,-161.93 394.34,-147.45"/>
+<polygon fill="black" stroke="black" points="395.07,-144 384.8,-146.57 394.43,-150.97 395.07,-144"/>
+<text text-anchor="middle" x="1320.2" y="-322.55" font-family="Helvetica,sans-Serif" font-size="10.00">tests/uses</text>
+</g>
+<!-- TestLambdaCalculus&#45;&gt;LambdaInterpreter -->
+<g id="edge27" class="edge">
+<title>TestLambdaCalculus-&gt;LambdaInterpreter</title>
+<path fill="none" stroke="black" d="M891.97,-655.34C825.17,-618.97 726.03,-564.99 650.14,-523.67"/>
+<polygon fill="black" stroke="black" points="651.85,-520.62 641.39,-518.91 648.5,-526.77 651.85,-520.62"/>
+<text text-anchor="middle" x="814.08" y="-597.95" font-family="Helvetica,sans-Serif" font-size="10.00">tests/uses</text>
+</g>
+<!-- TestLambdaCalculus&#45;&gt;ReductionStrategy -->
+<g id="edge31" class="edge">
+<title>TestLambdaCalculus-&gt;ReductionStrategy</title>
+<path fill="none" stroke="black" d="M1040.22,-682.42C1088.34,-670.3 1149.26,-647.78 1189,-606.95 1222.59,-572.44 1263.05,-425.22 1200,-349.55 1148.44,-287.67 931.45,-263.89 787.04,-254.84"/>
+<polygon fill="black" stroke="black" points="787.61,-251.37 777.41,-254.25 787.18,-258.35 787.61,-251.37"/>
+<text text-anchor="middle" x="1243.65" y="-460.25" font-family="Helvetica,sans-Serif" font-size="10.00">uses</text>
+</g>
+<!-- TestLambdaCalculus&#45;&gt;parse_lambda_string -->
+<g id="edge26" class="edge">
+<title>TestLambdaCalculus-&gt;parse_lambda_string</title>
+<path fill="none" stroke="black" d="M891.76,-756.82C861.45,-777.71 824.88,-798.58 788,-809.27 691.31,-837.28 427.02,-850.08 335,-809.27 297.42,-792.6 267.79,-754.48 250.36,-727.21"/>
+<polygon fill="black" stroke="black" points="253.52,-725.68 245.29,-719 247.57,-729.35 253.52,-725.68"/>
+<text text-anchor="middle" x="704" y="-832.15" font-family="Helvetica,sans-Serif" font-size="10.00">tests/uses</text>
+</g>
+<!-- unittest -->
+<g id="node13" class="node">
+<title>unittest</title>
+<polygon fill="#d3d3d3" stroke="black" points="1054.36,-484.05 1051.36,-488.05 1030.36,-488.05 1027.36,-484.05 935.64,-484.05 935.64,-442.45 1054.36,-442.45 1054.36,-484.05"/>
+<text text-anchor="middle" x="995" y="-467.45" font-family="Helvetica,sans-Serif" font-size="14.00">unittest</text>
+<text text-anchor="middle" x="995" y="-450.65" font-family="Helvetica,sans-Serif" font-size="14.00">(Python Module)</text>
+</g>
+<!-- TestLambdaCalculus&#45;&gt;unittest -->
+<g id="edge25" class="edge">
+<title>TestLambdaCalculus-&gt;unittest</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M974.86,-624.96C980.27,-581.76 986.93,-528.63 991.07,-495.59"/>
+<polygon fill="none" stroke="black" points="994.52,-496.25 992.29,-485.89 987.57,-495.38 994.52,-496.25"/>
+<text text-anchor="middle" x="1028.2" y="-597.95" font-family="Helvetica,sans-Serif" font-size="10.00">inherits from TestCase</text>
+</g>
+<!-- TestLambdaCalculus&#45;&gt;Logger_Test -->
+<g id="edge32" class="edge">
+<title>TestLambdaCalculus-&gt;Logger_Test</title>
+<path fill="none" stroke="black" d="M913.92,-625.16C910.33,-619.13 906.95,-613.02 903.96,-606.95 887.49,-573.52 875.36,-532.75 867.88,-503.36"/>
+<polygon fill="black" stroke="black" points="871.31,-502.64 865.51,-493.77 864.51,-504.32 871.31,-502.64"/>
+<text text-anchor="middle" x="938.98" y="-597.95" font-family="Helvetica,sans-Serif" font-size="10.00">configures/uses</text>
+</g>
+<!-- sys_module -->
+<g id="node15" class="node">
+<title>sys_module</title>
+<polygon fill="#d3d3d3" stroke="black" points="1191.36,-484.05 1188.36,-488.05 1167.36,-488.05 1164.36,-484.05 1072.64,-484.05 1072.64,-442.45 1191.36,-442.45 1191.36,-484.05"/>
+<text text-anchor="middle" x="1132" y="-467.45" font-family="Helvetica,sans-Serif" font-size="14.00">sys</text>
+<text text-anchor="middle" x="1132" y="-450.65" font-family="Helvetica,sans-Serif" font-size="14.00">(Python Module)</text>
+</g>
+<!-- TestLambdaCalculus&#45;&gt;sys_module -->
+<g id="edge33" class="edge">
+<title>TestLambdaCalculus-&gt;sys_module</title>
+<path fill="none" stroke="black" d="M1040.02,-649.37C1055.48,-637.07 1070.54,-622.75 1082,-606.95 1106.6,-573.03 1119.96,-525.94 1126.54,-495.28"/>
+<polygon fill="black" stroke="black" points="1129.88,-496.38 1128.43,-485.88 1123.02,-494.99 1129.88,-496.38"/>
+<text text-anchor="middle" x="1136.87" y="-597.95" font-family="Helvetica,sans-Serif" font-size="10.00">uses setrecursionlimit</text>
+</g>
+</g>
+</svg>
