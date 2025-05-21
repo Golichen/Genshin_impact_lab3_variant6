@@ -324,7 +324,8 @@ class LambdaInterpreter:
                         f"Alpha conversion needed for binder {term.var.name}"
                     )
                     log_msg_part2 = (
-                        f" in {term_latex} due to replacement {replacement_latex}"
+                        f"in {term_latex}"
+                        f"due to replacement {replacement_latex}"
                     )
                     logger.debug(log_msg_part1 + log_msg_part2)
 
@@ -356,7 +357,11 @@ class LambdaInterpreter:
             )
         return term
 
-    def alpha_convert(self, term: Abstraction, new_var: Variable) -> Abstraction:
+    def alpha_convert(
+        self,
+        term: Abstraction,
+        new_var: Variable
+    ) -> Abstraction:
         if not isinstance(term, Abstraction):
             raise TypeError(
                 "Alpha conversion can only be applied to Abstraction."
@@ -385,9 +390,10 @@ class LambdaInterpreter:
             logger.info(
                 "Beta reducing: %s -> %s", original_latex, reduced_latex
             )
-            # Line 332 fix:
-            step_str = f"{original_latex} \\xrightarrow{{\\beta}} {reduced_latex}"
-            self.steps.append(step_str)
+            self.steps.append(
+                f"{original_latex}"
+                f"\\xrightarrow{{\\beta}} {reduced_latex}"
+            )
             return reduced_term
         return None
 
@@ -653,7 +659,6 @@ class Parser:
         body = self._parse_expression()
 
         # Build nested abstractions from right to left
-        # e.g., λx y z.body -> Abstraction(x, Abstraction(y, Abstraction(z, body)))
         current_body = body
         for var in reversed(variables):
             current_body = Abstraction(var, current_body)
